@@ -1,5 +1,5 @@
 """
-URL configuration for splitwise project.
+URL configuration for splitgood project.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/4.2/topics/http/urls/
@@ -24,5 +24,6 @@ urlpatterns = [
     path('api-token-auth/', obtain_auth_token),
     path('expense/', include('expense.urls')),
     path('users/', include('users.urls')),
+    path('settle/', include('settle.urls')),
 
 ]

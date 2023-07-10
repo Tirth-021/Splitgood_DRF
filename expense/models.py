@@ -36,3 +36,6 @@ class ExpenseParticipant(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='expenses_owed')
     amount_owed = models.DecimalField(max_digits=10, decimal_places=2,null=True,blank=True)
     percentage = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
+    group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name='group')
+    is_paid = models.BooleanField(default=False)
+    owed_to = models.ForeignKey(User, on_delete=models.CASCADE, related_name='expenses_owed_to')

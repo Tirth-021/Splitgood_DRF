@@ -1,12 +1,5 @@
 from rest_framework import serializers
-from django.contrib.auth.models import User
 from .models import Group, Expense, ExpenseParticipant
-
-
-class UserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = ['id', 'username']
 
 
 class GroupSerializer(serializers.ModelSerializer):
@@ -16,7 +9,6 @@ class GroupSerializer(serializers.ModelSerializer):
 
 
 class ExpenseParticipantSerializer(serializers.ModelSerializer):
-    # user = UserSerializer()
     class Meta:
         model = ExpenseParticipant
         fields = ['user', 'amount_owed', 'percentage']
@@ -31,6 +23,7 @@ class ExpenseSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         participants_data = validated_data.pop('participants')
+        breakpoint()
         expense = Expense.objects.create(**validated_data)
         for participant_data in participants_data:
             user_data = participant_data.get('user')
@@ -42,5 +35,6 @@ class ExpenseSerializer(serializers.ModelSerializer):
             elif expense.split_type == 'UNEQUAL':
                 amount_owed = participant_data.get('amount_owed')
             participant = ExpenseParticipant.objects.create(expense=expense, user=user_data, amount_owed=amount_owed,
-                                                            percentage=user_percent)
+                                                            percentage=user_percent, group=expense.group,
+                                                            owed_to=expense.payer)
         return expense
